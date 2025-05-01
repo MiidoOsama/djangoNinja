@@ -1,38 +1,13 @@
-from ninja import NinjaAPI, Schema
+from ninja import NinjaAPI
 from .models import Book, Author
 from django.shortcuts import get_object_or_404
-from .schemas import BookSchema, CreateBookSchema, AuthorSchema, CreateAuthorSchema, AuthorSearchSchema, BookSearchSchema
-from typing import List, Optional
-from django.db.models import Count
-from datetime import date
+from .schemas import (
+    BookSchema, BookCreateSchema, AuthorSchema, 
+    AuthorCreateSchema, AuthorSearchSchema, BookSearchSchema
+)
+from typing import List
 
 api = NinjaAPI()
-
-class AuthorSchema(Schema):
-    id: str
-    name: str
-    biography: Optional[str] = None
-    birth_date: Optional[date] = None
-    nationality: Optional[str] = None
-
-class AuthorCreateSchema(Schema):
-    name: str
-    biography: Optional[str] = None
-    birth_date: Optional[date] = None
-    nationality: Optional[str] = None
-
-class BookSchema(Schema):
-    id: str
-    title: str
-    author_id: str
-    published_date: date
-    isbn: str
-
-class BookCreateSchema(Schema):
-    title: str
-    author_id: str
-    published_date: date
-    isbn: str
 
 # Book Endpoints
 
@@ -46,7 +21,7 @@ def list_books(request):
     return books
 
 @api.post('/books', response=BookSchema)
-def create_book(request, payload: CreateBookSchema):
+def create_book(request, payload: BookCreateSchema):
     """
     Create a new book.
     Requires title, author_id, published_date, and isbn.
@@ -71,7 +46,7 @@ def get_book(request, book_id: int):
     return book
 
 @api.put('/books/{book_id}', response=BookSchema)
-def update_book(request, book_id: int, payload: CreateBookSchema):
+def update_book(request, book_id: int, payload: BookCreateSchema):
     """
     Update an existing book.
     Can update title, author_id, published_date, and isbn.
@@ -120,7 +95,7 @@ def get_author(request, author_id: int):
     return authors
 
 @api.post('/authors', response=AuthorSchema)
-def create_author(request, payload: CreateAuthorSchema):
+def create_author(request, payload: AuthorCreateSchema):
     """
     Create a new author.
     Requires name, optional biography, birth_date, and nationality.
@@ -130,7 +105,7 @@ def create_author(request, payload: CreateAuthorSchema):
     return author
 
 @api.put('/authors/{author_id}', response=AuthorSchema)
-def update_author(request, author_id: int, payload: CreateAuthorSchema):
+def update_author(request, author_id: int, payload: AuthorCreateSchema):
     """
     Update an existing author.
     Can update name, biography, birth_date, and nationality.
