@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-ninja-project"
+version = "0.1.0"
+description = "A Django Ninja API project"
+requires-python = ">=3.8"
+dependencies = [
+    "Django>=4.2.20",
+    "django-ninja>=1.4.1",
+    "pydantic>=2.11.4",
+    "pymongo>=3.11.4",
+    "mongoengine>=0.29.1",
+    "django-mongoengine>=0.5.6",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3 
